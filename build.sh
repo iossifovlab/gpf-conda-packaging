@@ -77,23 +77,27 @@ function main() {
     build_docker_image_cp_from "$gpfjs_package_image" ./sources/ /gpfjs
   }
 
-  local gpf_dependencies
-  export gpf_dependencies=$( grep "=" sources/gpf/environment.yml | sed -E "s/\s+-\s+(.+)=(.+)$/    - \1=\2/g" )
-
-  local gpf_version
-  export gpf_version=$(cat sources/gpf/VERSION)
-
-  if [ -z $BUILD_NUMBER ];
-  then
-    export build_number=0
-  else
-    export build_number=$BUILD_NUMBER
-  fi
-
   build_stage "Prepare GPF conda recipies"
   {
+    local gpf_dependencies
+    export gpf_dependencies=$( grep "=" sources/gpf/environment.yml | sed -E "s/\s+-\s+(.+)=(.+)$/    - \1=\2/g" )
+    build_run_local echo "gpf_dependencies: \n$gpf_dependencies"
+
+    local gpf_version
+    export gpf_version=$(cat sources/gpf/VERSION)
+    build_run_local echo "gpf_version=$gpf_version"
+
+    if [ -z $BUILD_NUMBER ];
+    then
+      export build_number=0
+    else
+      export build_number=$BUILD_NUMBER
+    fi
 
     build_run_local echo "build_number=$build_number"
+
+    build_run_local ls -la conda-recipes/
+    build_run_local ls -la conda-recipes/gpf_dae/
   
     build_run_local cat conda-recipes/gpf_dae/meta.yaml.template | \
       envsubst > conda-recipes/gpf_dae/meta.yaml
@@ -108,9 +112,12 @@ function main() {
 
   build_stage "Build gpf_dae package"
   {
+    build_run_local echo "gpf_version=${gpf_version}"
+    build_run_local echo "build_number=${build_number}"
+
     local iossifovlab_anaconda_base_image_ref
     iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
-
+    
     build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_number="${build_number}"
