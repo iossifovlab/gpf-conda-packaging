@@ -106,41 +106,41 @@ function main() {
 
   }
 
-  # build_stage "Build gpf_dae package"
-  # {
-  #   local iossifovlab_anaconda_base_image_ref
-  #   iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
+  build_stage "Build gpf_dae package"
+  {
+    local iossifovlab_anaconda_base_image_ref
+    iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
 
-  #   build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
-  #     -e gpf_version="${gpf_version}" \
-  #     -e build_number="${build_number}"
+    build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_number="${build_number}"
 
-  #   build_run_container conda build \
-  #     -c defaults -c conda-forge -c iossifovlab -c bioconda \
-  #     conda-recipes/gpf_dae
+    build_run_container conda build \
+      -c defaults -c conda-forge -c iossifovlab -c bioconda \
+      conda-recipes/gpf_dae
 
-  #   build_run_container \
-  #     cp /opt/conda/conda-bld/linux-64/gpf_dae-${gpf_version}-py39_${build_number}.tar.bz2 \
-  #     /wd/builds
-  # }
+    build_run_container \
+      cp /opt/conda/conda-bld/linux-64/gpf_dae-${gpf_version}-py39_${build_number}.tar.bz2 \
+      /wd/builds
+  }
 
-  # build_stage "Build gpf_wdae package"
-  # {
-  #   local iossifovlab_anaconda_base_image_ref
-  #   iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
+  build_stage "Build gpf_wdae package"
+  {
+    local iossifovlab_anaconda_base_image_ref
+    iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
 
-  #   build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
-  #     -e gpf_version="${gpf_version}" \
-  #     -e build_number="${build_number}"
+    build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_number="${build_number}"
 
-  #   build_run_container conda build \
-  #     -c defaults -c conda-forge -c iossifovlab -c bioconda \
-  #     conda-recipes/gpf_wdae
+    build_run_container conda build \
+      -c defaults -c conda-forge -c iossifovlab -c bioconda \
+      conda-recipes/gpf_wdae
 
-  #   build_run_container \
-  #     cp /opt/conda/conda-bld/linux-64/gpf_wdae-${gpf_version}-py39_${build_number}.tar.bz2 \
-  #     /wd/builds
-  # }
+    build_run_container \
+      cp /opt/conda/conda-bld/linux-64/gpf_wdae-${gpf_version}-py39_${build_number}.tar.bz2 \
+      /wd/builds
+  }
 
   build_stage "Build gpf_gpfjs package"
   {
@@ -172,15 +172,15 @@ function main() {
 
     build_run_container_cp_to /root/ $HOME/.continuum
 
-    # build_run_container anaconda upload \
-    #   --force -u iossifovlab \
-    #   --label dev \
-    #   /wd/builds/gpf_dae-${gpf_version}-py39_${build_number}.tar.bz2
+    build_run_container anaconda upload \
+      --force -u iossifovlab \
+      --label dev \
+      /wd/builds/gpf_dae-${gpf_version}-py39_${build_number}.tar.bz2
 
-    # build_run_container anaconda upload \
-    #   --force -u iossifovlab \
-    #   --label dev \
-    #   /wd/builds/gpf_wdae-${gpf_version}-py39_${build_number}.tar.bz2
+    build_run_container anaconda upload \
+      --force -u iossifovlab \
+      --label dev \
+      /wd/builds/gpf_wdae-${gpf_version}-py39_${build_number}.tar.bz2
 
     build_run_container anaconda upload \
       --force -u iossifovlab \
