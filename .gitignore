@@ -2,4 +2,5 @@ sources
 build-env
 conda-recipes/gpf_dae/meta.yaml
 conda-recipes/gpf_wdae/meta.yaml
+conda-recipes/gpf_gpfjs/meta.yaml
 builds
