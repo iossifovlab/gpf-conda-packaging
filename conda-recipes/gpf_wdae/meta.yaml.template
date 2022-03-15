@@ -1,0 +1,36 @@
+
+package:
+  name: gpf_wdae
+  version: ${gpf_version}
+
+source:
+  path: ../../sources/gpf/wdae/
+build:
+  number: ${build_number}
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  host:
+    - python=3.9
+
+  run:
+    - gpf_dae=${gpf_version}
+$gpf_dependencies
+
+test:
+  imports:
+    - wdae
+    - users_api
+
+about:
+  home: https://github.com/iossifovlab/gpf
+  license: MIT License
+  license_family: MIT
+  license_file: ''
+  summary: GPF - Genotypes and Phenotypes in Familes
+  description: ''
+  doc_url: ''
+  dev_url: ''
+
+extra:
+  recipe-maintainers: ''
