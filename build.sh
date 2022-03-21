@@ -77,37 +77,112 @@ function main() {
     build_docker_image_cp_from "$gpfjs_package_image" ./sources/ /gpfjs
   }
 
-  build_stage "Prepare GPF conda recipies"
+  build_stage "Prepare GPF conda recipes"
   {
     local gpf_dependencies
-    export gpf_dependencies=$( grep "=" sources/gpf/environment.yml | sed -E "s/\s+-\s+(.+)=(.+)$/    - \1=\2/g" )
-    build_run_local echo "gpf_dependencies: \n$gpf_dependencies"
+    gpf_dependencies="$(grep "=" sources/gpf/environment.yml | sed -E "s/\s+-\s+(.+)=(.+)$/    - \1=\2/g")"
 
     local gpf_version
-    export gpf_version=$(cat sources/gpf/VERSION)
-    build_run_local echo "gpf_version=$gpf_version"
+    gpf_version="$(cat sources/gpf/VERSION)"
 
-    if [ -z $BUILD_NUMBER ];
+    local build_number
+    if [ -z "$BUILD_NUMBER" ];
     then
-      export build_number=0
+      build_number=0
     else
-      export build_number=$BUILD_NUMBER
+      build_number="$BUILD_NUMBER"
     fi
-
-    build_run_local echo "build_number=$build_number"
 
     build_run_local ls -la conda-recipes/
     build_run_local ls -la conda-recipes/gpf_dae/
   
-    build_run_local cat conda-recipes/gpf_dae/meta.yaml.template | \
-      envsubst > conda-recipes/gpf_dae/meta.yaml
+    build_run_local cat > conda-recipes/gpf_dae/meta.yaml <<<"
+package:
+  name: gpf_dae
+  version: $gpf_version
 
-    build_run_local cat conda-recipes/gpf_gpfjs/meta.yaml.template | \
-      envsubst > conda-recipes/gpf_gpfjs/meta.yaml
+source:
+  path: ../../sources/gpf/dae/
+build:
+  number: $build_number
+  script: python setup.py install --single-version-externally-managed --record=record.txt
 
-    build_run_local cat conda-recipes/gpf_wdae/meta.yaml.template | \
-      envsubst > conda-recipes/gpf_wdae/meta.yaml
+requirements:
+  host:
+    - python=3.9
 
+  run:
+$gpf_dependencies
+
+test:
+  imports:
+    - dae
+
+about:
+  home: https://github.com/iossifovlab/gpf
+  license: MIT License
+  license_family: MIT
+  license_file: ''
+  summary: GPF - Genotypes and Phenotypes in Familes
+  description: ''
+  doc_url: ''
+  dev_url: ''
+
+extra:
+  recipe-maintainers: ''
+"
+
+    build_run_local cat > conda-recipes/gpf_gpfjs/meta.yaml <<<"
+package:
+  name: gpf_gpfjs
+  version: $gpf_version
+
+source:
+  path: ../../sources/gpfjs
+  folder: gpfjs/
+
+build:
+  number: $build_number
+"
+
+    build_run_local cat > conda-recipes/gpf_wdae/meta.yaml <<<"
+
+package:
+  name: gpf_wdae
+  version: $gpf_version
+
+source:
+  path: ../../sources/gpf/wdae/
+build:
+  number: $build_number
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+
+requirements:
+  host:
+    - python=3.9
+
+  run:
+    - gpf_dae=$gpf_version
+$gpf_dependencies
+
+test:
+  imports:
+    - wdae
+    - users_api
+
+about:
+  home: https://github.com/iossifovlab/gpf
+  license: MIT License
+  license_family: MIT
+  license_file: ''
+  summary: GPF - Genotypes and Phenotypes in Familes
+  description: ''
+  doc_url: ''
+  dev_url: ''
+
+extra:
+  recipe-maintainers: ''
+"
   }
 
   build_stage "Build gpf_dae package"
