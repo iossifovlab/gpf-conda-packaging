@@ -64,11 +64,6 @@ function main() {
   gpfjs_package_image=$(e docker_data_img_gpfjs_package)
 
   local gpf_version
-  if ! ee_exists "gpf_version"; then
-    gpf_version="to-be-filled"
-  else
-    gpf_version="$(ee "gpf_version")"
-  fi
 
   build_stage "Get gpf package"
   {
@@ -89,10 +84,7 @@ function main() {
     local gpf_dependencies
     gpf_dependencies=$(build_run_local bash -c 'grep "=" sources/gpf/environment.yml | sed -E "s/\s+-\s+(.+)=(.+)$/    - \1=\2/g"')
 
-    if ! ee_exists "gpf_version"; then
-      gpf_version="$(cat sources/gpf/VERSION)"
-      ee_set "gpf_version" "$gpf_version"
-    fi
+    gpf_version="$(build_run_local cat sources/gpf/VERSION)"
 
     build_run_local ls -la conda-recipes/
     build_run_local ls -la conda-recipes/gpf_dae/
