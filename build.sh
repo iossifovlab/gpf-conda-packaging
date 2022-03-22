@@ -87,9 +87,11 @@ function main() {
     local gpf_dependencies
     gpf_dependencies=$(build_run_local bash -c 'grep "=" sources/gpf/environment.yml | sed -E "s/\s+-\s+(.+)=(.+)$/    - \1=\2/g"')
 
-    gpf_version="$(build_run_local cat sources/gpf/VERSION)"
-    if [ "$gpf_version" != "" ]; then
-      ee_set "gpf_version" "$gpf_version"
+    if [ "$gpf_version" == "" ]; then
+      gpf_version="$(build_run_local cat sources/gpf/VERSION)"
+      if [ "$gpf_version" != "" ]; then
+        ee_set "gpf_version" "$gpf_version"
+      fi
     fi
 
     build_run_local ls -la conda-recipes/
