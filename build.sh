@@ -254,7 +254,7 @@ extra:
       -e build_no="${build_no}"
 
     build_run_container_cp_to /root/ $HOME/.continuum
-    build_run_container chow root:root -R /root/.continuum
+    build_run_container chown root:root -R /root/.continuum
 
     build_run_container anaconda upload \
       --force -u iossifovlab \
