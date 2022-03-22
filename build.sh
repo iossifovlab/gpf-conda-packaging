@@ -97,7 +97,7 @@ function main() {
     build_run_local ls -la conda-recipes/
     build_run_local ls -la conda-recipes/gpf_dae/
   
-    build_run_local cat > conda-recipes/gpf_dae/meta.yaml <<<"
+    build_run_local dd status=none of=conda-recipes/gpf_dae/meta.yaml <<<"
 package:
   name: gpf_dae
   version: $gpf_version
@@ -133,7 +133,7 @@ extra:
   recipe-maintainers: ''
 "
 
-    build_run_local cat > conda-recipes/gpf_gpfjs/meta.yaml <<<"
+    build_run_local dd status=none of=conda-recipes/gpf_gpfjs/meta.yaml <<<"
 package:
   name: gpf_gpfjs
   version: $gpf_version
@@ -146,7 +146,7 @@ build:
   number: $build_no
 "
 
-    build_run_local cat > conda-recipes/gpf_wdae/meta.yaml <<<"
+    build_run_local dd status=none of=conda-recipes/gpf_wdae/meta.yaml <<<"
 
 package:
   name: gpf_wdae
