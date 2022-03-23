@@ -61,7 +61,7 @@ function main() {
   gpf_package_image=$(e docker_data_img_gpf_package)
 
   local gpfjs_package_image
-  gpfjs_package_image=$(e docker_data_img_gpfjs_package)
+  gpfjs_package_image=$(e docker_data_img_gpfjs_conda_package)
 
   local gpf_version
   if ee_exists "gpf_version"; then
@@ -80,6 +80,7 @@ function main() {
     # copy gpf package
     build_run_local mkdir -p ./sources/gpfjs
     build_docker_image_cp_from "$gpfjs_package_image" ./sources/ /gpfjs
+    build_docker_image_cp_from "$gpfjs_package_image" ./sources/gpf/wdae/wdae/gpfjs/static/ /gpfjs
   }
 
   build_stage "Prepare GPF conda recipes"
@@ -207,24 +208,6 @@ extra:
       /wd/builds
   }
 
-  build_stage "Build gpf_wdae package"
-  {
-    local iossifovlab_anaconda_base_image_ref
-    iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
-
-    build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}"
-
-    build_run_container conda build \
-      -c defaults -c conda-forge -c iossifovlab -c bioconda \
-      conda-recipes/gpf_wdae
-
-    build_run_container \
-      cp /opt/conda/conda-bld/linux-64/gpf_wdae-${gpf_version}-py39_${build_no}.tar.bz2 \
-      /wd/builds
-  }
-
   build_stage "Build gpf_gpfjs package"
   {
     local iossifovlab_anaconda_base_image_ref
@@ -240,6 +223,24 @@ extra:
 
     build_run_container \
       cp /opt/conda/conda-bld/linux-64/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
+      /wd/builds
+  }
+
+  build_stage "Build gpf_wdae package"
+  {
+    local iossifovlab_anaconda_base_image_ref
+    iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
+
+    build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}"
+
+    build_run_container conda build \
+      -c defaults -c conda-forge -c iossifovlab -c bioconda \
+      conda-recipes/gpf_wdae
+
+    build_run_container \
+      cp /opt/conda/conda-bld/linux-64/gpf_wdae-${gpf_version}-py39_${build_no}.tar.bz2 \
       /wd/builds
   }
 
