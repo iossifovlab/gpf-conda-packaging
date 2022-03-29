@@ -259,17 +259,14 @@ extra:
 
     build_run_container anaconda upload \
       --force -u iossifovlab \
-      --label main \  # --label dev \
       /wd/builds/gpf_dae-${gpf_version}-py39_${build_no}.tar.bz2
 
     build_run_container anaconda upload \
       --force -u iossifovlab \
-      --label main \  #--label dev \
       /wd/builds/gpf_wdae-${gpf_version}-py39_${build_no}.tar.bz2
 
     build_run_container anaconda upload \
       --force -u iossifovlab \
-      --label main \  #--label dev \
       /wd/builds/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2
 
   }
