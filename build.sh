@@ -80,7 +80,7 @@ function main() {
     # copy gpf package
     build_run_local mkdir -p ./sources/gpfjs
     build_docker_image_cp_from "$gpfjs_package_image" ./sources/ /gpfjs
-    build_docker_image_cp_from "$gpfjs_package_image" ./sources/gpf/wdae/wdae/gpfjs/static/ /gpfjs
+    build_docker_image_cp_from "$gpfjs_package_image" ./sources/gpf/wdae/wdae/gpfjs/static/gpfjs/ /gpfjs
   }
 
   build_stage "Prepare GPF conda recipes"
