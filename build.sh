@@ -89,7 +89,8 @@ function main() {
     gpf_dependencies=$(build_run_local bash -c 'grep "=" sources/gpf/environment.yml | sed -E "s/\s+-\s+(.+)=(.+)$/    - \1=\2/g"')
 
     if [ "$gpf_version" == "" ]; then
-      gpf_version="$(build_run_local cat sources/gpf/VERSION)"
+      version="$(build_run_local cat sources/gpf/VERSION)"
+      gpf_version=${version}.${build_no}
       if [ "$gpf_version" != "" ]; then
         ee_set "gpf_version" "$gpf_version"
       fi
