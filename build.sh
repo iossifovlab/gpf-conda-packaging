@@ -91,7 +91,7 @@ function main() {
     if [ "$gpf_version" == "" ]; then
       version="$(build_run_local cat sources/gpf/VERSION)"
       if [ "$version" != "" ]; then
-          gpf_version=${version}.${build_no}
+          gpf_version=${version}${build_no}
         ee_set "gpf_version" "$gpf_version"
       fi
     fi
