@@ -33,6 +33,11 @@ pipeline {
         zulipNotification(
           topic: "${env.JOB_NAME}"
         )
+        archiveArtifacts artifacts: 'builds/*.tar.bz2',
+                   allowEmptyArchive: true,
+                   fingerprint: true,
+                   onlyIfSuccessful: true
+
       }
     }
   }

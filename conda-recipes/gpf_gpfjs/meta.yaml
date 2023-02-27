@@ -1,0 +1,14 @@
+{% set build_number = environ.get("build_no",0) %}
+{% set version = environ.get("gpf_version", "0") %}
+
+package:
+  name: gpf_gpfjs
+  version: {{ version }}
+
+source:
+  path: /wd/sources/gpfjs
+  folder: gpfjs/
+
+build:
+  number: {{ build_number }}
+  noarch: generic
