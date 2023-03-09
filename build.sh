@@ -199,7 +199,7 @@ extra:
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}"
 
-    build_run_container conda build \
+    build_run_container conda mambabuild \
       -c defaults -c conda-forge -c iossifovlab -c bioconda \
       conda-recipes/gpf_dae
 
@@ -217,7 +217,7 @@ extra:
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}"
 
-    build_run_container conda build \
+    build_run_container conda mambabuild \
       -c defaults -c conda-forge -c iossifovlab -c bioconda \
       conda-recipes/gpf_gpfjs
 
@@ -235,7 +235,7 @@ extra:
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}"
 
-    build_run_container conda build \
+    build_run_container conda mambabuild \
       -c defaults -c conda-forge -c iossifovlab -c bioconda \
       conda-recipes/gpf_wdae
 
