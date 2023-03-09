@@ -192,10 +192,10 @@ extra:
     build_run_local echo "gpf_version=${gpf_version}"
     build_run_local echo "build_no=${build_no}"
 
-    local iossifovlab_anaconda_base_image_ref
-    iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
+    local iossifovlab_mamba_base_image_ref
+    iossifovlab_mamba_base_image_ref=$(e docker_img_iossifovlab_mamba_base)
     
-    build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
+    build_run_ctx_init "container" "$iossifovlab_mamba_base_image_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}"
 
@@ -210,10 +210,10 @@ extra:
 
   build_stage "Build gpf_gpfjs package"
   {
-    local iossifovlab_anaconda_base_image_ref
-    iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
+    local iossifovlab_mamba_base_image_ref
+    iossifovlab_mamba_base_image_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
+    build_run_ctx_init "container" "$iossifovlab_mamba_base_image_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}"
 
@@ -228,10 +228,10 @@ extra:
 
   build_stage "Build gpf_wdae package"
   {
-    local iossifovlab_anaconda_base_image_ref
-    iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
+    local iossifovlab_mamba_base_image_ref
+    iossifovlab_mamba_base_image_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
+    build_run_ctx_init "container" "$iossifovlab_mamba_base_image_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}"
 
@@ -247,10 +247,10 @@ extra:
 
   build_stage "Deploy gpf packages"
   {
-    local iossifovlab_anaconda_base_image_ref
-    iossifovlab_anaconda_base_image_ref=$(e docker_img_iossifovlab_anaconda_base)
+    local iossifovlab_mamba_base_image_ref
+    iossifovlab_mamba_base_image_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_anaconda_base_image_ref" \
+    build_run_ctx_init "container" "$iossifovlab_mamba_base_image_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}"
 
