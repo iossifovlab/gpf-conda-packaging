@@ -19,12 +19,14 @@ build:
 
 requirements:
   host:
-    - python=3.9
+    - python=3.10
 
   run:
     {% for dep in run_environment.dependencies %}
-    {% if not dep.startswith("hadoop") %} 
+    {% if not dep.startswith("hadoop") and not dep.startswith("openjdk") %} 
     - {{ dep }}
+    {% else %}
+    - {{ dep }}  # [not osx]
     {% endif %}
     {% endfor %}
 
