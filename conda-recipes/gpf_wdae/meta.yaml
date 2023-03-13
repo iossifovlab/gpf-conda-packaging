@@ -24,9 +24,7 @@ requirements:
   run:
     - gpf_dae={{ version }}.{{ build_number }}
     {% for dep in run_environment.dependencies %}
-    {% if dep.startswith("hadoop") or dep.startswith("openjdk") %} 
-    - {{ dep }}  # [not osx]
-    {% else %}
+    {% if not dep.startswith("hadoop") and not dep.startswith("openjdk") %} 
     - {{ dep }}
     {% endif %}
     {% endfor %}
