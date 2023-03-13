@@ -1,0 +1,46 @@
+{% set build_number = environ.get('build_no',0) %}
+
+{% set data = load_setup_py_data() %}
+{% set version = data['version'] %}
+
+{% set run_environment = load_file_data('environment.yml') %}
+
+package:
+  name: gpf_dae
+  version: {{ version }}.{{ build_number }}
+
+source:
+  path: /wd/sources/gpf/dae
+
+build:
+  number: {{ build_number }}
+  script: (python setup.py install --single-version-externally-managed --record=record.txt)
+  noarch: python
+
+requirements:
+  host:
+    - python=3.9
+
+  run:
+    {% for dep in run_environment.dependencies %}
+    {% if not dep.startswith("hadoop") %} 
+    - {{ dep }}
+    {% endif %}
+    {% endfor %}
+
+test:
+  imports:
+    - dae
+
+about:
+  home: https://github.com/iossifovlab/gpf
+  license: MIT License
+  license_family: MIT
+  license_file: ''
+  summary: GPF - Genotypes and Phenotypes in Familes
+  description: ''
+  doc_url: ''
+  dev_url: ''
+
+extra:
+  recipe-maintainers: ''
