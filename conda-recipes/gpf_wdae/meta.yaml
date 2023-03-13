@@ -19,12 +19,14 @@ build:
 
 requirements:
   host:
-    - python=3.9
+    - python=3.10
 
   run:
     - gpf_dae={{ version }}.{{ build_number }}
     {% for dep in run_environment.dependencies %}
-    {% if not dep.startswith("hadoop") %} 
+    {% if dep.startswith("hadoop") or dep.startswith("openjdk") %} 
+    - {{ dep }}  # [not osx]
+    {% else %}
     - {{ dep }}
     {% endif %}
     {% endfor %}

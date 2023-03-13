@@ -23,10 +23,10 @@ requirements:
 
   run:
     {% for dep in run_environment.dependencies %}
-    {% if not dep.startswith("hadoop") and not dep.startswith("openjdk") %} 
-    - {{ dep }}
-    {% else %}
+    {% if dep.startswith("hadoop") or dep.startswith("openjdk") %} 
     - {{ dep }}  # [not osx]
+    {% else %}
+    - {{ dep }}
     {% endif %}
     {% endfor %}
 
