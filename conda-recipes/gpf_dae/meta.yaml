@@ -2,7 +2,6 @@
 
 {% set data = load_setup_py_data() %}
 {% set version = data['version'] %}
-
 {% set run_environment = load_file_data('environment.yml') %}
 
 package:
@@ -15,7 +14,6 @@ source:
 build:
   number: {{ build_number }}
   script: (python setup.py install --single-version-externally-managed --record=record.txt)
-  noarch: python
 
 requirements:
   host:
