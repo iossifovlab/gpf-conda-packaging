@@ -53,7 +53,8 @@ function main() {
     defer_ret build_run_ctx_reset
 
     build_run rm -rvf ./builds ./results ./sources
-    build_run_local mkdir -p ./builds ./results ./sources ./builds/linux-64 ./builds/osx-64
+    build_run_local mkdir -p ./builds ./results ./sources \
+        ./builds/linux-64 ./builds/osx-64 ./builds/noarch
   }
 
   local gpf_package_image
@@ -140,24 +141,24 @@ function main() {
 
   }
 
-#   build_stage "Build gpf_gpfjs package"
-#   {
-#     local iossifovlab_mamba_base_ref
-#     iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+  build_stage "Build gpf_gpfjs package"
+  {
+    local iossifovlab_mamba_base_ref
+    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-#     build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-#       -e gpf_version="${gpf_version}" \
-#       -e build_no="${build_no}" \
-#       -e numpy_version="${numpy_version}"
+    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}" \
+      -e numpy_version="${numpy_version}"
 
-#     build_run_container conda mambabuild --numpy ${numpy_version} \
-#       -c defaults -c conda-forge -c iossifovlab -c bioconda \
-#       conda-recipes/gpf_gpfjs
+    build_run_container conda mambabuild --numpy ${numpy_version} \
+      -c defaults -c conda-forge -c iossifovlab -c bioconda \
+      conda-recipes/gpf_gpfjs
 
-#     build_run_container \
-#       cp /opt/conda/conda-bld/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
-#       /wd/builds
-#   }
+    build_run_container \
+      cp /opt/conda/conda-bld/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
+      /wd/builds/noarch
+  }
 
   build_stage "Build gpf_wdae package"
   {
@@ -215,10 +216,10 @@ function main() {
       --label dev \
       /wd/builds/osx-64/gpf_wdae-${gpf_version}-py310_${build_no}.tar.bz2 
 
-    # build_run_container anaconda upload \
-    #   --force -u iossifovlab \
-    #   --label dev \
-    #   /wd/builds/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2
+    build_run_container anaconda upload \
+      --force -u iossifovlab \
+      --label dev \
+      /wd/builds/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2
 
   }
 
