@@ -33,7 +33,7 @@ pipeline {
         zulipNotification(
           topic: "${env.JOB_NAME}"
         )
-        archiveArtifacts artifacts: 'results/conda-channle.tar.gz',
+        archiveArtifacts artifacts: 'results/conda-channel.tar.gz',
                    allowEmptyArchive: true,
                    fingerprint: true,
                    onlyIfSuccessful: true
