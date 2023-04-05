@@ -54,7 +54,7 @@ function main() {
 
     build_run rm -rvf ./builds ./results ./sources
     build_run_local mkdir -p ./builds ./results ./sources \
-        ./builds/linux-64 ./builds/osx-64 ./builds/noarch
+        ./builds/noarch
   }
 
   local gpf_package_image
@@ -132,12 +132,8 @@ function main() {
       conda-recipes/gpf_dae
 
     build_run_container \
-      cp /opt/conda/conda-bld/linux-64/gpf_dae-${gpf_version}-py310_${build_no}.tar.bz2 \
-      /wd/builds/linux-64
-    build_run_container \
-      conda convert --platform osx-64 \
-        /wd/builds/linux-64/gpf_dae-${gpf_version}-py310_${build_no}.tar.bz2 \
-        -o /wd/builds/
+      cp /opt/conda/conda-bld/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
 
   }
 
@@ -175,12 +171,8 @@ function main() {
       conda-recipes/gpf_wdae
 
     build_run_container \
-      cp /opt/conda/conda-bld/linux-64/gpf_wdae-${gpf_version}-py310_${build_no}.tar.bz2 \
-      /wd/builds/linux-64
-    build_run_container \
-      conda convert --platform osx-64 \
-        /wd/builds/linux-64/gpf_wdae-${gpf_version}-py310_${build_no}.tar.bz2 \
-        -o /wd/builds/
+      cp /opt/conda/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
   }
 
 
@@ -193,28 +185,24 @@ function main() {
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}"
 
+    build_run_container conda index builds/
+    build_run_container tar czvf /wd/results/conda-channel.tar.gz \
+          --exclude .cache \
+          --transform "s,^.,conda-channel," \
+          -C builds/ .
+
     build_run_container_cp_to /root/ $HOME/.continuum
     build_run_container chown root:root -R /root/.continuum
 
     build_run_container anaconda upload \
       --force -u iossifovlab \
       --label dev \
-      /wd/builds/linux-64/gpf_dae-${gpf_version}-py310_${build_no}.tar.bz2 
+      /wd/builds/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 
 
     build_run_container anaconda upload \
       --force -u iossifovlab \
       --label dev \
-      /wd/builds/linux-64/gpf_wdae-${gpf_version}-py310_${build_no}.tar.bz2 
-
-    build_run_container anaconda upload \
-      --force -u iossifovlab \
-      --label dev \
-      /wd/builds/osx-64/gpf_dae-${gpf_version}-py310_${build_no}.tar.bz2 
-
-    build_run_container anaconda upload \
-      --force -u iossifovlab \
-      --label dev \
-      /wd/builds/osx-64/gpf_wdae-${gpf_version}-py310_${build_no}.tar.bz2 
+      /wd/builds/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 
 
     build_run_container anaconda upload \
       --force -u iossifovlab \

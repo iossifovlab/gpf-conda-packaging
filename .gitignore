@@ -2,3 +2,4 @@ sources
 build-env
 builds
 .build-scripts-tmp-sessions/
+results
