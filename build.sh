@@ -36,7 +36,7 @@ function main() {
   libmain_init_build_env \
     clobber:"$clobber" preset:"$preset" build_no:"$build_no" \
     generate_jenkins_init:"$generate_jenkins_init" expose_ports:"$expose_ports" \
-    iossifovlab.iossifovlab-gpf-containers
+    iossifovlab.gpf iossifovlab.gpfjs
 
   libmain_save_build_env_on_exit
   libbuild_init stage:"$stage" registry.seqpipe.org
@@ -176,40 +176,40 @@ function main() {
   }
 
 
-  build_stage "Deploy gpf packages"
-  {
-    local iossifovlab_mamba_base_ref
-    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+#   build_stage "Deploy gpf packages"
+#   {
+#     local iossifovlab_mamba_base_ref
+#     iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}"
+#     build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+#       -e gpf_version="${gpf_version}" \
+#       -e build_no="${build_no}"
 
-    build_run_container conda index builds/
-    build_run_container tar czvf /wd/results/conda-channel.tar.gz \
-          --exclude .cache \
-          --transform "s,^.,conda-channel," \
-          -C builds/ .
+#     build_run_container conda index builds/
+#     build_run_container tar czvf /wd/results/conda-channel.tar.gz \
+#           --exclude .cache \
+#           --transform "s,^.,conda-channel," \
+#           -C builds/ .
 
-    build_run_container_cp_to /root/ $HOME/.continuum
-    build_run_container chown root:root -R /root/.continuum
+#     build_run_container_cp_to /root/ $HOME/.continuum
+#     build_run_container chown root:root -R /root/.continuum
 
-    build_run_container anaconda upload \
-      --force -u iossifovlab \
-      --label dev \
-      /wd/builds/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 
+#     build_run_container anaconda upload \
+#       --force -u iossifovlab \
+#       --label dev \
+#       /wd/builds/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 
 
-    build_run_container anaconda upload \
-      --force -u iossifovlab \
-      --label dev \
-      /wd/builds/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 
+#     build_run_container anaconda upload \
+#       --force -u iossifovlab \
+#       --label dev \
+#       /wd/builds/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 
 
-    build_run_container anaconda upload \
-      --force -u iossifovlab \
-      --label dev \
-      /wd/builds/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2
+#     build_run_container anaconda upload \
+#       --force -u iossifovlab \
+#       --label dev \
+#       /wd/builds/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2
 
-  }
+#   }
 
 
 }
