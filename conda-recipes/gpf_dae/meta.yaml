@@ -1,12 +1,11 @@
 {% set build_number = environ.get('build_no',0) %}
+{% set gpf_version = environ.get('gpf_version','2015.0.0') %}
 
-{% set data = load_setup_py_data() %}
-{% set version = data['version'] %}
 {% set run_environment = load_file_data('environment.yml') %}
 
 package:
   name: gpf_dae
-  version: {{ version }}.{{ build_number }}
+  version: {{ gpf_version }}.{{ build_number }}
 
 source:
   path: /wd/sources/gpf/dae

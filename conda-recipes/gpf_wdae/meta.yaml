@@ -1,13 +1,11 @@
 {% set build_number = environ.get("build_no",0) %}
-
-{% set data = load_setup_py_data() %}
-{% set version = data['version'] %}
+{% set gpf_version = environ.get('gpf_version','2015.0.0') %}
 
 {% set run_environment = load_file_data("environment.yml") %}
 
 package:
   name: gpf_wdae
-  version: {{ version }}.{{ build_number }}
+  version: {{ gpf_version }}.{{ build_number }}
 
 source:
   path: /wd/sources/gpf/wdae
@@ -22,7 +20,7 @@ requirements:
     - python=3.9
 
   run:
-    - gpf_dae={{ version }}.{{ build_number }}
+    - gpf_dae={{ gpf_version }}.{{ build_number }}
     {% for dep in run_environment.dependencies %}
     {% if not dep.startswith("hadoop") and not dep.startswith("openjdk") %} 
     - {{ dep }}
