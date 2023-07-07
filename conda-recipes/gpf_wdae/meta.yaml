@@ -5,7 +5,7 @@
 
 package:
   name: gpf_wdae
-  version: {{ gpf_version }}.{{ build_number }}
+  version: {{ gpf_version }}
 
 source:
   path: /wd/sources/gpf/wdae
@@ -20,7 +20,7 @@ requirements:
     - python=3.9
 
   run:
-    - gpf_dae={{ gpf_version }}.{{ build_number }}
+    - gpf_dae={{ gpf_version }}
     {% for dep in run_environment.dependencies %}
     {% if not dep.startswith("hadoop") and not dep.startswith("openjdk") %} 
     - {{ dep }}

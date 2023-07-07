@@ -5,7 +5,7 @@
 
 package:
   name: gpf_dae
-  version: {{ gpf_version }}.{{ build_number }}
+  version: {{ gpf_version }}
 
 source:
   path: /wd/sources/gpf/dae
