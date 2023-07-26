@@ -136,12 +136,14 @@ function main() {
       -e numpy_version="${numpy_version}"
     
     build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c iossifovlab -c bioconda -c defaults \
+      -c conda-forge -c bioconda -c iossifovlab -c defaults \
       conda-recipes/gpf_dae
 
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
+
+    build_run_container conda index /wd/builds/
 
   }
 
@@ -157,17 +159,16 @@ function main() {
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}"
-    
-    build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c iossifovlab -c bioconda -c defaults \
-      conda-recipes/gpf_impala_storage
 
-    build_run_attach
+    build_run_container conda mambabuild --numpy ${numpy_version} \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab -c defaults \
+      conda-recipes/gpf_impala_storage
 
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
+    build_run_container conda index /wd/builds/
   }
 
   build_stage "Build gpf_gpfjs package"
@@ -181,12 +182,14 @@ function main() {
       -e numpy_version="${numpy_version}"
 
     build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c iossifovlab -c bioconda -c defaults \
+      -c conda-forge -c bioconda -c iossifovlab -c defaults \
       conda-recipes/gpf_gpfjs
 
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
       /wd/builds/noarch
+
+    build_run_container conda index /wd/builds/
   }
 
   build_stage "Build gpf_wdae package"
@@ -200,12 +203,14 @@ function main() {
       -e numpy_version="${numpy_version}"
 
     build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c iossifovlab -c bioconda -c defaults \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab -c defaults \
       conda-recipes/gpf_wdae
 
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
+
+    build_run_container conda index /wd/builds/
   }
 
 
