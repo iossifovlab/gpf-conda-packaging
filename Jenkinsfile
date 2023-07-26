@@ -33,6 +33,12 @@ pipeline {
         zulipNotification(
           topic: "${env.JOB_NAME}"
         )
+
+        archiveArtifacts artifacts: 'build-env/*.svg',
+                   allowEmptyArchive: true,
+                   fingerprint: true,
+                   onlyIfSuccessful: true
+
         archiveArtifacts artifacts: 'results/conda-channel.tar.gz',
                    allowEmptyArchive: true,
                    fingerprint: true,

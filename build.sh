@@ -113,6 +113,12 @@ function main() {
     fi
   }
 
+  build_stage "Draw build dependencies"
+  {
+
+    build_deps_graph_write_image 'build-env/dependency-graph.svg'
+  }
+
 
   build_stage "Build gpf_dae package"
   {
