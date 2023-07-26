@@ -129,13 +129,21 @@ function main() {
 
     local iossifovlab_mamba_base_ref
     iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
-    
+
     build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}"
-    
-    build_run_container conda mambabuild --numpy ${numpy_version} \
+
+    defer_ret build_run_ctx_reset
+
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}" \
+    #   -e numpy_version="${numpy_version}"
+
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c iossifovlab -c defaults \
       conda-recipes/gpf_dae
 
@@ -143,47 +151,51 @@ function main() {
       cp /opt/conda/conda-bld/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    build_run_container conda index /wd/builds/
+    build_run_container \
+      conda index /wd/builds/
 
   }
 
   build_stage "Build gpf_impala_storage package"
   {
-    build_run_local echo "gpf_version=${gpf_version}"
-    build_run_local echo "build_no=${build_no}"
+    # build_run_local echo "gpf_version=${gpf_version}"
+    # build_run_local echo "build_no=${build_no}"
 
-    local iossifovlab_mamba_base_ref
-    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+    # local iossifovlab_mamba_base_ref
+    # iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
     
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}" \
-      -e numpy_version="${numpy_version}"
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}" \
+    #   -e numpy_version="${numpy_version}"
 
-    build_run_container conda mambabuild --numpy ${numpy_version} \
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab -c defaults \
       conda-recipes/gpf_impala_storage
 
     build_run_container \
-      cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-${build_no}.tar.bz2 \
+      cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    build_run_container conda index /wd/builds/
+    build_run_container \
+      conda index /wd/builds/
   }
 
   build_stage "Build gpf_gpfjs package"
   {
-    local iossifovlab_mamba_base_ref
-    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+    # local iossifovlab_mamba_base_ref
+    # iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}" \
-      -e numpy_version="${numpy_version}"
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}" \
+    #   -e numpy_version="${numpy_version}"
 
-    build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c bioconda -c iossifovlab -c defaults \
-      conda-recipes/gpf_gpfjs
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
+        -c conda-forge -c bioconda -c iossifovlab -c defaults \
+        conda-recipes/gpf_gpfjs
 
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
@@ -194,13 +206,13 @@ function main() {
 
   build_stage "Build gpf_wdae package"
   {
-    local iossifovlab_mamba_base_ref
-    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+    # local iossifovlab_mamba_base_ref
+    # iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}" \
-      -e numpy_version="${numpy_version}"
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}" \
+    #   -e numpy_version="${numpy_version}"
 
     build_run_container conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab -c defaults \
@@ -216,12 +228,12 @@ function main() {
 
   build_stage "Deploy gpf packages"
   {
-    local iossifovlab_mamba_base_ref
-    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+    # local iossifovlab_mamba_base_ref
+    # iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}"
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}"
 
     build_run_container conda index builds/
     build_run_container tar czvf /wd/results/conda-channel.tar.gz \
