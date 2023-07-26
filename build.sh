@@ -165,7 +165,7 @@ function main() {
       conda-recipes/gpf_impala_storage
 
     build_run_container \
-      cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container conda index /wd/builds/

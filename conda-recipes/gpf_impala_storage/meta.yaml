@@ -27,7 +27,7 @@ requirements:
 
 test:
   imports:
-    - dae
+    - impala_storage
 
 about:
   home: https://github.com/iossifovlab/gpf
