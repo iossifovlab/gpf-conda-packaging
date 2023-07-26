@@ -241,6 +241,15 @@ function main() {
           --transform "s,^.,conda-channel," \
           -C builds/ .
 
+    local image_name="gpf-conda-packaging-channel"
+    build_docker_data_image_create_from_tarball "${image_name}" <(
+      build_run_local tar cvf - \
+          --exclude .cache \
+          --transform "s,^.,conda-channel," \
+          -C builds/ .
+    )
+
+
     # build_run_container_cp_to /root/ $HOME/.continuum
     # build_run_container chown root:root -R /root/.continuum
 
