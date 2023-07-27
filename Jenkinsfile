@@ -35,8 +35,7 @@ pipeline {
 
         archiveArtifacts artifacts: 'build-env/*.svg',
                    allowEmptyArchive: true,
-                   fingerprint: true,
-                   onlyIfSuccessful: true
+                   fingerprint: true
 
         archiveArtifacts artifacts: 'results/conda-channel.tar.gz',
                    allowEmptyArchive: true,

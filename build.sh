@@ -118,7 +118,6 @@ function main() {
 
   build_stage "Draw build dependencies"
   {
-
     build_deps_graph_write_image 'build-env/dependency-graph.svg'
   }
 
