@@ -49,7 +49,7 @@ function main() {
   # cleanup
   build_stage "Cleanup"
   {
-    build_run_ctx_init "container" "ubuntu:20.04"
+    build_run_ctx_init "container" "ubuntu:22.04"
     defer_ret build_run_ctx_reset
 
     build_run rm -rvf ./builds ./results ./sources
@@ -92,7 +92,10 @@ function main() {
 
   build_stage "Get GPF version"
   {
+    build_run_local pwd
+
     if [ "$gpf_version" == "" ]; then
+      build_run_local cat sources/gpf/VERSION
       version="$(build_run_local cat sources/gpf/VERSION)"
       if [ "$version" != "" ]; then
           gpf_version=${version}
@@ -113,6 +116,10 @@ function main() {
     fi
   }
 
+  build_stage "Draw build dependencies"
+  {
+    build_deps_graph_write_image 'build-env/dependency-graph.svg'
+  }
 
   build_stage "Build gpf_dae package"
   {
@@ -121,75 +128,126 @@ function main() {
 
     local iossifovlab_mamba_base_ref
     iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
-    
+
     build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}"
-    
-    build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c defaults -c conda-forge -c iossifovlab -c bioconda \
+
+    defer_ret build_run_ctx_reset
+
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}" \
+    #   -e numpy_version="${numpy_version}"
+
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
+      -c conda-forge -c bioconda -c iossifovlab -c defaults \
       conda-recipes/gpf_dae
 
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
+    build_run_container \
+      conda index /wd/builds/
+
+  }
+
+  build_stage "Build gpf_impala_storage package"
+  {
+    # build_run_local echo "gpf_version=${gpf_version}"
+    # build_run_local echo "build_no=${build_no}"
+
+    # local iossifovlab_mamba_base_ref
+    # iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+    
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}" \
+    #   -e numpy_version="${numpy_version}"
+
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab -c defaults \
+      conda-recipes/gpf_impala_storage
+
+    build_run_container \
+      cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
+
+    build_run_container \
+      conda index /wd/builds/
   }
 
   build_stage "Build gpf_gpfjs package"
   {
-    local iossifovlab_mamba_base_ref
-    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+    # local iossifovlab_mamba_base_ref
+    # iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}" \
-      -e numpy_version="${numpy_version}"
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}" \
+    #   -e numpy_version="${numpy_version}"
 
-    build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c defaults -c conda-forge -c iossifovlab -c bioconda \
-      conda-recipes/gpf_gpfjs
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
+        -c conda-forge -c bioconda -c iossifovlab -c defaults \
+        conda-recipes/gpf_gpfjs
 
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
       /wd/builds/noarch
+
+    build_run_container conda index /wd/builds/
   }
 
   build_stage "Build gpf_wdae package"
   {
-    local iossifovlab_mamba_base_ref
-    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+    # local iossifovlab_mamba_base_ref
+    # iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}" \
-      -e numpy_version="${numpy_version}"
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}" \
+    #   -e numpy_version="${numpy_version}"
 
     build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c defaults -c conda-forge -c iossifovlab -c bioconda \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab -c defaults \
       conda-recipes/gpf_wdae
 
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
+
+    build_run_container conda index /wd/builds/
   }
 
 
   build_stage "Deploy gpf packages"
   {
-    local iossifovlab_mamba_base_ref
-    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+    # local iossifovlab_mamba_base_ref
+    # iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}"
+    # build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    #   -e gpf_version="${gpf_version}" \
+    #   -e build_no="${build_no}"
 
     build_run_container conda index builds/
     build_run_container tar czvf /wd/results/conda-channel.tar.gz \
           --exclude .cache \
           --transform "s,^.,conda-channel," \
           -C builds/ .
+
+    local image_name="gpf-conda-packaging-channel"
+    build_docker_data_image_create_from_tarball "${image_name}" <(
+      build_run_local tar cvf - \
+          --exclude .cache \
+          --transform "s,^.,conda-channel," \
+          -C builds/ .
+    )
+
 
     # build_run_container_cp_to /root/ $HOME/.continuum
     # build_run_container chown root:root -R /root/.continuum
