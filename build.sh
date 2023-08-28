@@ -143,7 +143,7 @@ function main() {
 
     build_run_container \
       conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c bioconda -c iossifovlab -c defaults \
+      -c conda-forge -c bioconda -c iossifovlab \
       conda-recipes/gpf_dae
 
     build_run_container \
@@ -170,7 +170,7 @@ function main() {
 
     build_run_container \
       conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab -c defaults \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_impala_storage
 
     build_run_container \
@@ -193,7 +193,7 @@ function main() {
 
     build_run_container \
       conda mambabuild --numpy ${numpy_version} \
-        -c conda-forge -c bioconda -c iossifovlab -c defaults \
+        -c conda-forge -c bioconda -c iossifovlab \
         conda-recipes/gpf_gpfjs
 
     build_run_container \
@@ -214,7 +214,7 @@ function main() {
     #   -e numpy_version="${numpy_version}"
 
     build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab -c defaults \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_wdae
 
     build_run_container \
