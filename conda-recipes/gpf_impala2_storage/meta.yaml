@@ -1,0 +1,44 @@
+{% set build_number = environ.get('build_no',0) %}
+{% set gpf_version = environ.get('gpf_version','2015.0.0') %}
+
+{% set run_environment = load_file_data('impala2-environment.yml') %}
+
+package:
+  name: gpf_impala2_storage
+  version: {{ gpf_version }}
+
+source:
+  path: /wd/sources/gpf/impala2_storage
+
+build:
+  number: {{ build_number }}
+  noarch: python
+  script: (python setup.py install --single-version-externally-managed --record=record.txt)
+
+requirements:
+  host:
+    - python=3.9
+
+  run:
+    - python=3.9
+    - gpf_dae={{ gpf_version }}
+    {% for dep in run_environment.dependencies %}
+    - {{ dep }}
+    {% endfor %}
+
+test:
+  imports:
+    - impala_storage
+
+about:
+  home: https://github.com/iossifovlab/gpf
+  license: MIT License
+  license_family: MIT
+  license_file: ''
+  summary: GPF - Genotypes and Phenotypes in Familes
+  description: ''
+  doc_url: ''
+  dev_url: ''
+
+extra:
+  recipe-maintainers: ''
