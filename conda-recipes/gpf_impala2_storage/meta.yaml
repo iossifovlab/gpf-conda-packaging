@@ -28,7 +28,7 @@ requirements:
 
 test:
   imports:
-    - impala_storage
+    - impala2_storage
 
 about:
   home: https://github.com/iossifovlab/gpf
