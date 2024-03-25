@@ -17,10 +17,10 @@ build:
 
 requirements:
   host:
-    - python=3.9
+    - python=3.10
 
   run:
-    - python=3.9
+    - python=3.10
     - gpf_dae={{ gpf_version }}
     {% for dep in run_environment.dependencies %}
     - {{ dep }}
