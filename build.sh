@@ -116,6 +116,19 @@ function main() {
     fi
   }
 
+
+  build_stage "Get python version"
+  {
+    if [ "$python_version" == "" ]; then
+      version="$(build_run_local grep -E 'python=(.+)$' -o sources/gpf/environment.yml | sed 's/python=\(.\+\)/\1/g')"
+      echo "python version=${version}"
+      if [ "$version" != "" ]; then
+          python_version=$version
+        ee_set "python_version" "$python_version"
+      fi
+    fi
+  }
+
   build_stage "Draw build dependencies"
   {
     build_deps_graph_write_image 'build-env/dependency-graph.svg'
@@ -125,6 +138,7 @@ function main() {
   {
     build_run_local echo "gpf_version=${gpf_version}"
     build_run_local echo "build_no=${build_no}"
+    build_run_local echo "python_version=${python_version}"
 
     local iossifovlab_mamba_base_ref
     iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
@@ -132,7 +146,8 @@ function main() {
     build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}" \
-      -e numpy_version="${numpy_version}"
+      -e numpy_version="${numpy_version}" \
+      -e python_version="${python_version}"
 
     defer_ret build_run_ctx_reset
 
