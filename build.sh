@@ -210,6 +210,21 @@ function main() {
       conda index /wd/builds/
   }
 
+  build_stage "Build gpf_federation package"
+  {
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
+      conda-recipes/gpf_federation
+
+    build_run_container \
+      cp /opt/conda/conda-bld/noarch/gpf_federation-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
+
+    build_run_container \
+      conda index /wd/builds/
+  }
+
   build_stage "Build gpf_gpfjs package"
   {
     build_run_container \
