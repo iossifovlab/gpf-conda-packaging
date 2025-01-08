@@ -49,7 +49,7 @@ function main() {
   # cleanup
   build_stage "Cleanup"
   {
-    build_run_ctx_init "container" "ubuntu:22.04"
+    build_run_ctx_init "container" "ubuntu:24.04"
     defer_ret build_run_ctx_reset
 
     build_run rm -rvf ./builds ./results ./sources
@@ -78,8 +78,13 @@ function main() {
     # copy gpf package
     build_run_local mkdir -p ./sources/gpf
     build_docker_image_cp_from "$gpf_package_image" ./sources/ /gpf
+    
+    # Hackish forcing the version of numpy to 1.26
+    build_run sed "s/numpy=.*/numpy=1.26/g" -i sources/gpf/environment.yml
+    
     build_run cp sources/gpf/environment.yml sources/gpf/dae
     build_run cp sources/gpf/environment.yml sources/gpf/wdae
+
   }
 
   build_stage "Get gpfjs package"
@@ -114,6 +119,7 @@ function main() {
         ee_set "numpy_version" "$numpy_version"
       fi
     fi
+
   }
 
 
