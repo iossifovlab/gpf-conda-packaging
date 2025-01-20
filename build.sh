@@ -79,9 +79,6 @@ function main() {
     build_run_local mkdir -p ./sources/gpf
     build_docker_image_cp_from "$gpf_package_image" ./sources/ /gpf
     
-    # Hackish forcing the version of numpy to 1.26
-    build_run sed "s/numpy=.*/numpy=1.26/g" -i sources/gpf/environment.yml
-    
     build_run cp sources/gpf/environment.yml sources/gpf/dae
     build_run cp sources/gpf/environment.yml sources/gpf/wdae
 
@@ -119,7 +116,6 @@ function main() {
         ee_set "numpy_version" "$numpy_version"
       fi
     fi
-
   }
 
 
