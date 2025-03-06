@@ -2,8 +2,6 @@
 {% set gpf_version = environ.get('gpf_version','2015.0.0') %}
 {% set python_version = environ.get('python_version','3.10') %}
 
-{% set run_environment = load_file_data('environment.yml') %}
-
 package:
   name: gpf_vep_annotator
   version: {{ gpf_version }}
@@ -25,9 +23,6 @@ requirements:
   run:
     - python={{ python_version }}
     - gpf_dae={{ gpf_version }}
-    {% for dep in run_environment.dependencies %}
-    - {{ dep }}
-    {% endfor %}
 
 test:
   imports:
