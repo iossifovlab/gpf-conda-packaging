@@ -199,18 +199,17 @@ function main() {
 
   build_stage "Build gpf_vep_annotator package"
   {
-    echo "disabled gpf_vep_annotator package"
-    # build_run_container \
-    #   conda mambabuild --numpy ${numpy_version} \
-    #   -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-    #   conda-recipes/gpf_vep_annotator
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
+      conda-recipes/gpf_vep_annotator
 
-    # build_run_container \
-    #   cp /opt/conda/conda-bld/noarch/gpf_vep_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
-    #   /wd/builds/noarch
+    build_run_container \
+      cp /opt/conda/conda-bld/noarch/gpf_vep_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
 
-    # build_run_container \
-    #   conda index /wd/builds/
+    build_run_container \
+      conda index /wd/builds/
   }
 
   build_stage "Build gpf_federation package"
