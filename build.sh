@@ -169,6 +169,12 @@ function main() {
 
   build_stage "Build GPF packages"
   {
+
+    build_run_container \
+      conda mambabuild --numpy ${numpy_version} \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
+      conda-recipes/gpf_rest_client
+
     build_run_detached \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
@@ -199,6 +205,11 @@ function main() {
 
 
     # Copy the built conda packages into conda channel directory
+
+    build_run_container \
+      cp /opt/conda/conda-bld/noarch/gpf_rest_client-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
+
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
@@ -241,22 +252,6 @@ function main() {
 
 #     # build_run_container \
 #     #   conda index /wd/builds/
-#   }
-
-
-#   build_stage "Build gpf_rest_client package"
-#   {
-#     build_run_container \
-#       conda mambabuild --numpy ${numpy_version} \
-#       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-#       conda-recipes/gpf_rest_client
-
-#     build_run_container \
-#       cp /opt/conda/conda-bld/noarch/gpf_rest_client-${gpf_version}-py_${build_no}.tar.bz2 \
-#       /wd/builds/noarch
-
-#     build_run_container \
-#       conda index /wd/builds/
 #   }
 
   build_stage "Deploy gpf packages"

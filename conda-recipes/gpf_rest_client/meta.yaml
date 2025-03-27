@@ -1,0 +1,42 @@
+{% set build_number = environ.get('build_no',0) %}
+{% set gpf_version = environ.get('gpf_version','2015.0.0') %}
+{% set python_version = environ.get('python_version','3.10') %}
+
+package:
+  name: gpf_rest_client
+  version: {{ gpf_version }}
+
+source:
+  path: /wd/sources/gpf/rest_client
+
+build:
+  number: {{ build_number }}
+  noarch: python
+  script: (python setup.py install --single-version-externally-managed --record=record.txt)
+
+requirements:
+  host:
+    - python={{ python_version }}
+    - setuptools
+    - pip
+
+  run:
+    - python={{ python_version }}
+    - requests
+
+test:
+  imports:
+    - rest_client
+
+about:
+  home: https://github.com/iossifovlab/gpf
+  license: MIT License
+  license_family: MIT
+  license_file: ''
+  summary: GPF - Genotypes and Phenotypes in Familes
+  description: ''
+  doc_url: ''
+  dev_url: ''
+
+extra:
+  recipe-maintainers: ''
