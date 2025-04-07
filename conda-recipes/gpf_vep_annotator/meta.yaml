@@ -17,8 +17,8 @@ build:
 requirements:
   host:
     - python={{ python_version }}
-    - setuptools
-    - pip
+    - setuptools=70.3
+    - pip=24.1
 
   run:
     - python={{ python_version }}

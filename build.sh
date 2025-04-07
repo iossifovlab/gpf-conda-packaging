@@ -154,6 +154,9 @@ function main() {
     defer_ret build_run_ctx_reset
 
     build_run_container \
+        mamba install -y -c conda-forge setuptools=70.3
+
+    build_run_container \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c iossifovlab \
       conda-recipes/gpf_dae
