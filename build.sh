@@ -70,7 +70,7 @@ function main() {
 
   local python_version
   if ee_exists "python_version"; then
-    numpy_version="$(ee "python_version")"
+    python_version="$(ee "python_version")"
   fi
 
   local numpy_version
