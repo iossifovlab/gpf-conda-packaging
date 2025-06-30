@@ -68,6 +68,11 @@ function main() {
     gpf_version="$(ee "gpf_version")"
   fi
 
+  local python_version
+  if ee_exists "python_version"; then
+    numpy_version="$(ee "python_version")"
+  fi
+
   local numpy_version
   if ee_exists "numpy_version"; then
     numpy_version="$(ee "numpy_version")"
