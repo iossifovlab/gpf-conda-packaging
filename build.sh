@@ -183,27 +183,27 @@ function main() {
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_rest_client
 
-    build_run_detached \
+    build_run_container \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_impala_storage
 
-    build_run_detached \
+    build_run_container \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_impala2_storage
 
-    build_run_detached \
+    build_run_container \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_vep_annotator
 
-    build_run_detached \
+    build_run_container \
       conda mambabuild --numpy ${numpy_version} \
         -c conda-forge -c bioconda -c iossifovlab \
         conda-recipes/gpf_gpfjs
 
-    build_run_detached conda mambabuild --numpy ${numpy_version} \
+    build_run_container conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_wdae
 
