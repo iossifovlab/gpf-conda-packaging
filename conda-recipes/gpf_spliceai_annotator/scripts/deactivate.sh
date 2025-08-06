@@ -1,0 +1,6 @@
+export XLA_FLAGS=$XLA_FLAGS_CONDA_BACKUP
+unset XLA_FLAGS_CONDA_BACKUP
+if [ -z $XLA_FLAGS ]; then
+    unset XLA_FLAGS
+fi
+
