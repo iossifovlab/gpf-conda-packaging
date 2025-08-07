@@ -229,7 +229,7 @@ function main() {
       -e python_version="${python_version}"
 
 
-    # Build each package in its own context
+    # Build each package in its own context in parallel
     build_run_container ctx:ctx_spliceai_annotator \
       conda mambabuild \
       -c conda-forge -c bioconda -c file:///wd/builds \
@@ -297,13 +297,13 @@ function main() {
       /wd/builds/noarch
 
     # Destroy contexts
-    build_run_ctx_reset ctx:ctx_vep_annotator
-    build_run_ctx_reset ctx:ctx_wdae
-    build_run_ctx_reset ctx:ctx_gpfjs
+    build_run_ctx_reset ctx:ctx_spliceai_annotator
+    build_run_ctx_reset ctx:ctx_rest_client
     build_run_ctx_reset ctx:ctx_impala2_storage
     build_run_ctx_reset ctx:ctx_impala_storage
-    build_run_ctx_reset ctx:ctx_rest_client
-    build_run_ctx_reset ctx:ctx_spliceai_annotator
+    build_run_ctx_reset ctx:ctx_vep_annotator
+    build_run_ctx_reset ctx:ctx_gpfjs
+    build_run_ctx_reset ctx:ctx_wdae
 
     # Index the conda channel
     build_run_container \
