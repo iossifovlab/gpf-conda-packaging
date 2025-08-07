@@ -12,7 +12,12 @@ source:
 build:
   number: {{ build_number }}
   noarch: python
-  script: (python setup.py install --single-version-externally-managed --record=record.txt)
+  script: 
+  - (python setup.py install --single-version-externally-managed --record=record.txt)
+  - mkdir -p "${PREFIX}/etc/conda/activate.d"
+  - cp "${RECIPE_DIR}/scripts/activate.sh" "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
+  - mkdir -p "${PREFIX}/etc/conda/deactivate.d"
+  - cp "${RECIPE_DIR}/scripts/deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/${PKG_NAME}_deactivate.sh"
 
 requirements:
   host:
