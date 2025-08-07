@@ -80,6 +80,7 @@ function main() {
 
   build_stage "Get gpf package"
   {
+    echo "gpf"
     # copy gpf package
     build_run_local mkdir -p ./sources/gpf
     build_docker_image_cp_from "$gpf_package_image" ./sources/ /gpf
@@ -91,6 +92,7 @@ function main() {
 
   build_stage "Get gpfjs package"
   {
+    echo "gpfjs"
     # copy gpf package
     build_run_local mkdir -p ./sources/gpfjs
     build_docker_image_cp_from "$gpfjs_package_image" ./sources/ /gpfjs
@@ -159,9 +161,6 @@ function main() {
     defer_ret build_run_ctx_reset
 
     build_run_container \
-        mamba install -y -c conda-forge setuptools=70.3
-
-    build_run_container \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c iossifovlab \
       conda-recipes/gpf_dae
@@ -177,6 +176,25 @@ function main() {
 
   build_stage "Build GPF packages"
   {
+    local -A ctx_spliceai_annotator
+
+    build_run_ctx_init ctx:ctx_spliceai_annotator "container" "$iossifovlab_mamba_base_ref" \
+      --gpus all \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}" \
+      -e numpy_version="${numpy_version}" \
+      -e python_version="${python_version}"
+
+    defer_ret ctx:ctx_spliceai_annotator build_run_ctx_reset
+
+    build_run_container ctx:ctx_spliceai_annotator \
+      conda mambabuild \
+      -c conda-forge -c bioconda -c file:///wd/builds \
+      conda-recipes/gpf_spliceai_annotator
+
+    build_run_container ctx:ctx_spliceai_annotator \
+      cp /opt/conda/conda-bld/noarch/gpf_spliceai_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
 
     build_run_container \
       conda mambabuild --numpy ${numpy_version} \
@@ -207,13 +225,6 @@ function main() {
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_wdae
 
-
-    # Wait for the builds to finish
-    build_run_container wait
-
-
-    # Copy the built conda packages into conda channel directory
-
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_rest_client-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
@@ -237,11 +248,11 @@ function main() {
     build_run_container \
       cp /opt/conda/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
-
-
     # Index the conda channel
     build_run_container \
       conda index /wd/builds/
+    
+    build_run_attach
   }
 
 
