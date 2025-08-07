@@ -152,24 +152,26 @@ function main() {
     local iossifovlab_mamba_base_ref
     iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "persistent" "container" "$iossifovlab_mamba_base_ref" \
+    local -A ctx_build
+
+    build_run_ctx_init ctx:ctx_build "persistent" "container" "$iossifovlab_mamba_base_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
 
-    defer_ret build_run_ctx_reset
+    defer_ret build_run_ctx_reset ctx:ctx_build
 
-    build_run_container \
+    build_run_container ctx:ctx_build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c iossifovlab \
       conda-recipes/gpf_dae
 
-    build_run_container \
+    build_run_container ctx:ctx_build\
       cp /opt/conda/conda-bld/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    build_run_container \
+    build_run_container ctx:ctx_build\
       conda index /wd/builds/
 
   }
@@ -306,7 +308,7 @@ function main() {
     build_run_ctx_reset ctx:ctx_wdae
 
     # Index the conda channel
-    build_run_container \
+    build_run_container ctx:ctx_build\
       conda index /wd/builds/
     
   }
@@ -315,24 +317,25 @@ function main() {
 
   build_stage "Build gpf_federation package"
   {
-    echo "disabled gpf_federation package"
-    build_run_container \
+    build_run_container ctx:ctx_build\
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_federation
 
-    build_run_container \
+    build_run_container ctx:ctx_build\
       cp /opt/conda/conda-bld/noarch/gpf_federation-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    build_run_container \
+    build_run_container ctx:ctx_build\
       conda index /wd/builds/
   }
 
   build_stage "Deploy gpf packages"
   {
-    build_run_container conda index /wd/builds/
-    build_run_container tar czvf /wd/results/conda-channel.tar.gz \
+    build_run_container ctx:ctx_build\
+      conda index /wd/builds/
+    build_run_container ctx:ctx_build\
+      tar czvf /wd/results/conda-channel.tar.gz \
           --exclude .cache \
           --transform "s,^.,conda-channel," \
           -C builds/ .
