@@ -152,7 +152,7 @@ function main() {
     local iossifovlab_mamba_base_ref
     iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
 
-    build_run_ctx_init "container" "$iossifovlab_mamba_base_ref" \
+    build_run_ctx_init "persistent" "container" "$iossifovlab_mamba_base_ref" \
       -e gpf_version="${gpf_version}" \
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
@@ -177,7 +177,6 @@ function main() {
   build_stage "Build GPF packages"
   {
     local -A ctx_spliceai_annotator
-
     build_run_ctx_init ctx:ctx_spliceai_annotator "container" "$iossifovlab_mamba_base_ref" \
       --gpus all \
       -e gpf_version="${gpf_version}" \
@@ -185,7 +184,6 @@ function main() {
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
 
-    defer_ret ctx:ctx_spliceai_annotator build_run_ctx_reset
 
     build_run_container ctx:ctx_spliceai_annotator \
       conda mambabuild \
@@ -204,8 +202,6 @@ function main() {
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
 
-    defer_ret ctx:ctx_rest_client build_run_ctx_reset
-
     build_run_container ctx:ctx_rest_client \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
@@ -222,7 +218,6 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
-    defer_ret ctx:ctx_impala_storage build_run_ctx_reset
 
     build_run_container ctx:ctx_impala_storage \
       conda mambabuild --numpy ${numpy_version} \
@@ -240,7 +235,6 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
-    defer_ret ctx:ctx_impala2_storage build_run_ctx_reset
 
     build_run_container ctx:ctx_impala2_storage \
       conda mambabuild --numpy ${numpy_version} \
@@ -258,7 +252,6 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
-    defer_ret ctx:ctx_vep_annotator build_run_ctx_reset
 
     build_run_container ctx:ctx_vep_annotator \
       conda mambabuild --numpy ${numpy_version} \
@@ -276,7 +269,6 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
-    defer_ret ctx:ctx_gpfjs build_run_ctx_reset
 
     build_run_container ctx:ctx_gpfjs \
       conda mambabuild --numpy ${numpy_version} \
@@ -294,7 +286,6 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
-    defer_ret ctx:ctx_wdae build_run_ctx_reset
 
     build_run_container ctx:ctx_wdae \
       conda mambabuild --numpy ${numpy_version} \
@@ -305,6 +296,14 @@ function main() {
     build_run_container ctx:ctx_wdae \
       cp /opt/conda/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
+
+    build_run_ctx_reset ctx:ctx_vep_annotator
+    build_run_ctx_reset ctx:ctx_wdae
+    build_run_ctx_reset ctx:ctx_gpfjs
+    build_run_ctx_reset ctx:ctx_impala2_storage
+    build_run_ctx_reset ctx:ctx_impala_storage
+    build_run_ctx_reset ctx:ctx_rest_client
+    build_run_ctx_reset ctx:ctx_spliceai_annotator
 
     # Index the conda channel
     build_run_container \
