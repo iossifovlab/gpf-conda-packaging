@@ -154,11 +154,12 @@ function main() {
 
     local -A ctx_build
 
-    build_run_ctx_init ctx:ctx_build "persistent" "container" "$iossifovlab_mamba_base_ref" \
-      -e gpf_version="${gpf_version}" \
-      -e build_no="${build_no}" \
-      -e numpy_version="${numpy_version}" \
-      -e python_version="${python_version}"
+    build_run_ctx_init ctx:ctx_build "persistent" "container" \
+        "$iossifovlab_mamba_base_ref" \
+        -e gpf_version="${gpf_version}" \
+        -e build_no="${build_no}" \
+        -e numpy_version="${numpy_version}" \
+        -e python_version="${python_version}"
 
     defer_ret build_run_ctx_reset ctx:ctx_build
 
@@ -178,6 +179,9 @@ function main() {
 
   build_stage "Build GPF packages"
   {
+    local iossifovlab_mamba_base_ref
+    iossifovlab_mamba_base_ref=$(e docker_img_iossifovlab_mamba_base)
+
     # Create build contexts for each package
     local -A ctx_spliceai_annotator
     build_run_ctx_init ctx:ctx_spliceai_annotator "container" \
