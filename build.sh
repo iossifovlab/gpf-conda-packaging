@@ -196,63 +196,120 @@ function main() {
       cp /opt/conda/conda-bld/noarch/gpf_spliceai_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    build_run_container \
+
+    local -A ctx_rest_client
+    build_run_ctx_init ctx:ctx_rest_client "container" "$iossifovlab_mamba_base_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}" \
+      -e numpy_version="${numpy_version}" \
+      -e python_version="${python_version}"
+
+    defer_ret ctx:ctx_rest_client build_run_ctx_reset
+
+    build_run_container ctx:ctx_rest_client \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_rest_client
 
-    build_run_container \
+    build_run_container ctx:ctx_rest_client \
+      cp /opt/conda/conda-bld/noarch/gpf_rest_client-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
+
+
+    local -A ctx_impala_storage
+    build_run_ctx_init ctx:ctx_impala_storage "container" "$iossifovlab_mamba_base_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}" \
+      -e numpy_version="${numpy_version}" \
+      -e python_version="${python_version}"
+    defer_ret ctx:ctx_impala_storage build_run_ctx_reset
+
+    build_run_container ctx:ctx_impala_storage \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_impala_storage
 
-    build_run_container \
+    build_run_container ctx:ctx_impala_storage \
+      cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
+
+
+    local -A ctx_impala2_storage
+    build_run_ctx_init ctx:ctx_impala2_storage "container" "$iossifovlab_mamba_base_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}" \
+      -e numpy_version="${numpy_version}" \
+      -e python_version="${python_version}"
+    defer_ret ctx:ctx_impala2_storage build_run_ctx_reset
+
+    build_run_container ctx:ctx_impala2_storage \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_impala2_storage
 
-    build_run_container \
+    build_run_container ctx:ctx_impala2_storage \
+      cp /opt/conda/conda-bld/noarch/gpf_impala2_storage-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
+
+
+    local -A ctx_vep_annotator
+    build_run_ctx_init ctx:ctx_vep_annotator "container" "$iossifovlab_mamba_base_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}" \
+      -e numpy_version="${numpy_version}" \
+      -e python_version="${python_version}"
+    defer_ret ctx:ctx_vep_annotator build_run_ctx_reset
+
+    build_run_container ctx:ctx_vep_annotator \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       conda-recipes/gpf_vep_annotator
 
-    build_run_container \
+    build_run_container ctx:ctx_vep_annotator \
+      cp /opt/conda/conda-bld/noarch/gpf_vep_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
+
+
+    local -A ctx_gpfjs
+    build_run_ctx_init ctx:ctx_gpfjs "container" "$iossifovlab_mamba_base_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}" \
+      -e numpy_version="${numpy_version}" \
+      -e python_version="${python_version}"
+    defer_ret ctx:ctx_gpfjs build_run_ctx_reset
+
+    build_run_container ctx:ctx_gpfjs \
       conda mambabuild --numpy ${numpy_version} \
         -c conda-forge -c bioconda -c iossifovlab \
         conda-recipes/gpf_gpfjs
 
-    build_run_container conda mambabuild --numpy ${numpy_version} \
-      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-      conda-recipes/gpf_wdae
-
-    build_run_container \
-      cp /opt/conda/conda-bld/noarch/gpf_rest_client-${gpf_version}-py_${build_no}.tar.bz2 \
-      /wd/builds/noarch
-
-    build_run_container \
-      cp /opt/conda/conda-bld/noarch/gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
-      /wd/builds/noarch
-
-    build_run_container \
-      cp /opt/conda/conda-bld/noarch/gpf_impala2_storage-${gpf_version}-py_${build_no}.tar.bz2 \
-      /wd/builds/noarch
-
-    build_run_container \
-      cp /opt/conda/conda-bld/noarch/gpf_vep_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
-      /wd/builds/noarch
-
-    build_run_container \
+    build_run_container ctx:ctx_gpfjs \
       cp /opt/conda/conda-bld/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    build_run_container \
+
+    local -A ctx_wdae
+    build_run_ctx_init ctx:ctx_wdae "container" "$iossifovlab_mamba_base_ref" \
+      -e gpf_version="${gpf_version}" \
+      -e build_no="${build_no}" \
+      -e numpy_version="${numpy_version}" \
+      -e python_version="${python_version}"
+    defer_ret ctx:ctx_wdae build_run_ctx_reset
+
+    build_run_container ctx:ctx_wdae \
+      conda mambabuild --numpy ${numpy_version} \
+      -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
+      conda-recipes/gpf_wdae
+
+
+    build_run_container ctx:ctx_wdae \
       cp /opt/conda/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
+
     # Index the conda channel
     build_run_container \
       conda index /wd/builds/
     
-    build_run_attach
   }
 
 
