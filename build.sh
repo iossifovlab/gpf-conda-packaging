@@ -175,6 +175,8 @@ function main() {
     build_run_container ctx:ctx_build\
       conda index /wd/builds/
 
+    build_run_ctx_persist ctx:ctx_build
+
   }
 
   build_stage "Build GPF packages"
