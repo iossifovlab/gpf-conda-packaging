@@ -193,6 +193,7 @@ function main() {
         -e build_no="${build_no}" \
         -e numpy_version="${numpy_version}" \
         -e python_version="${python_version}"
+    defer_ret build_run_ctx_reset ctx:ctx_spliceai_annotator
 
     local -A ctx_rest_client
     build_run_ctx_init ctx:ctx_rest_client "container" "$iossifovlab_mamba_base_ref" \
@@ -200,6 +201,7 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
+    defer_ret build_run_ctx_reset ctx:ctx_rest_client
 
     local -A ctx_impala_storage
     build_run_ctx_init ctx:ctx_impala_storage "container" "$iossifovlab_mamba_base_ref" \
@@ -207,6 +209,7 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
+    defer_ret build_run_ctx_reset ctx:ctx_impala2_storage
 
     local -A ctx_impala2_storage
     build_run_ctx_init ctx:ctx_impala2_storage "container" "$iossifovlab_mamba_base_ref" \
@@ -214,6 +217,7 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
+    defer_ret build_run_ctx_reset ctx:ctx_impala_storage
 
     local -A ctx_vep_annotator
     build_run_ctx_init ctx:ctx_vep_annotator "container" "$iossifovlab_mamba_base_ref" \
@@ -221,6 +225,7 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
+    defer_ret build_run_ctx_reset ctx:ctx_vep_annotator
 
     local -A ctx_gpfjs
     build_run_ctx_init ctx:ctx_gpfjs "container" "$iossifovlab_mamba_base_ref" \
@@ -228,6 +233,7 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
+    defer_ret build_run_ctx_reset ctx:ctx_gpfjs
 
     local -A ctx_wdae
     build_run_ctx_init ctx:ctx_wdae "container" "$iossifovlab_mamba_base_ref" \
@@ -235,6 +241,7 @@ function main() {
       -e build_no="${build_no}" \
       -e numpy_version="${numpy_version}" \
       -e python_version="${python_version}"
+    defer_ret build_run_ctx_reset ctx:ctx_wdae
 
 
     # Build each package in its own context in parallel
@@ -304,19 +311,10 @@ function main() {
       cp /opt/conda/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    # Destroy contexts
-    build_run_ctx_reset ctx:ctx_spliceai_annotator
-    build_run_ctx_reset ctx:ctx_rest_client
-    build_run_ctx_reset ctx:ctx_impala2_storage
-    build_run_ctx_reset ctx:ctx_impala_storage
-    build_run_ctx_reset ctx:ctx_vep_annotator
-    build_run_ctx_reset ctx:ctx_gpfjs
-    build_run_ctx_reset ctx:ctx_wdae
-
     # Index the conda channel
     build_run_container ctx:ctx_build \
       conda index /wd/builds/
-    
+
   }
 
 
