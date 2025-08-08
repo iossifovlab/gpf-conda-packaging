@@ -166,7 +166,7 @@ function main() {
     build_run_container ctx:ctx_build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c iossifovlab \
-      conda-recipes/gpf_dae
+      /wd/conda-recipes/gpf_dae
 
     build_run_container ctx:ctx_build\
       cp /opt/conda/conda-bld/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 \
@@ -248,37 +248,37 @@ function main() {
     build_run_container ctx:ctx_spliceai_annotator \
       conda mambabuild \
       -c conda-forge -c bioconda -c file:///wd/builds \
-      conda-recipes/gpf_spliceai_annotator &
+      /wd/conda-recipes/gpf_spliceai_annotator &
 
     build_run_container ctx:ctx_rest_client \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-      conda-recipes/gpf_rest_client &
+      /wd/conda-recipes/gpf_rest_client &
 
     build_run_container ctx:ctx_impala_storage \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-      conda-recipes/gpf_impala_storage &
+      /wd/conda-recipes/gpf_impala_storage &
 
     build_run_container ctx:ctx_impala2_storage \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-      conda-recipes/gpf_impala2_storage &
+      /wd/conda-recipes/gpf_impala2_storage &
 
     build_run_container ctx:ctx_vep_annotator \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-      conda-recipes/gpf_vep_annotator &
+      /wd/conda-recipes/gpf_vep_annotator &
 
     build_run_container ctx:ctx_gpfjs \
       conda mambabuild --numpy ${numpy_version} \
-        -c conda-forge -c bioconda -c iossifovlab \
-        conda-recipes/gpf_gpfjs &
+      -c conda-forge -c bioconda -c iossifovlab \
+      /wd/conda-recipes/gpf_gpfjs &
 
     build_run_container ctx:ctx_wdae \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-      conda-recipes/gpf_wdae &
+      /wd/conda-recipes/gpf_wdae &
 
     wait
 
