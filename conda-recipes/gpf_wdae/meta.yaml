@@ -23,6 +23,7 @@ requirements:
     - pip=24.1
 
   run:
+    - python={{ python_version }}
     - gpf_dae={{ gpf_version }}
 
 test:
