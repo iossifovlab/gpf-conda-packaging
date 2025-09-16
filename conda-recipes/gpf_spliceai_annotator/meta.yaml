@@ -28,7 +28,7 @@ requirements:
   run:
     - python={{ python_version }}
     - gpf_dae={{ gpf_version }}
-    - tensorflow=2.18
+    - tensorflow>=2.4.1
 
 test:
   imports:
