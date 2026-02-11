@@ -290,31 +290,31 @@ function main() {
 
     # Copy conda packages to the builds directory
     build_run_container ctx:ctx_spliceai_annotator \
-      envs/build//gpf_spliceai_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_spliceai_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_rest_client \
-      envs/build//gpf_rest_client-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_rest_client-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_impala_storage \
-      envs/build//gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_impala_storage-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_impala2_storage \
-      envs/build//gpf_impala2_storage-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_impala2_storage-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_vep_annotator \
-      envs/build//gpf_vep_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_vep_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_gpfjs \
-      envs/build//gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_gpfjs-${gpf_version}-${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_wdae \
-      envs/build//gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     # Index the conda channel
@@ -334,7 +334,7 @@ function main() {
       conda-recipes/gpf_federation
 
     build_run_container ctx:ctx_build \
-      envs/build//gpf_federation-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_federation-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_build \
