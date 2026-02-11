@@ -175,8 +175,9 @@ function main() {
       cp  /opt/conda/envs/build/conda-bld/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    build_run_container ctx:ctx_build\
-      conda index /wd/builds/
+    build_run_container ctx:ctx_build bash -c '\
+      /opt/conda/bin/conda run --no-capture-output -n build \
+        conda index /wd/builds/'
 
     build_run_ctx_persist ctx:ctx_build
 
@@ -320,8 +321,10 @@ function main() {
       /wd/builds/noarch
 
     # Index the conda channel
-    build_run_container ctx:ctx_build \
-      conda index /wd/builds/
+    build_run_container ctx:ctx_build bash -c '\
+      /opt/conda/bin/conda run --no-capture-output -n build \
+        conda index /wd/builds/'
+
 
   }
 
@@ -339,8 +342,9 @@ function main() {
       cp /opt/conda/envs/build/conda-bld/noarch/gpf_federation-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
-    build_run_container ctx:ctx_build\
-      conda index /wd/builds/
+    build_run_container ctx:ctx_build bash -c '\
+      /opt/conda/bin/conda run --no-capture-output -n build \
+        conda index /wd/builds/'
   }
 
   build_stage "Deploy gpf packages"
