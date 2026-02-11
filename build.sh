@@ -163,8 +163,10 @@ function main() {
 
     defer_ret build_run_ctx_reset ctx:ctx_build
 
+    build_run_attach
+
     build_run_container ctx:ctx_build bash -c '\
-      /opt/conda/bin/conda run --no-capture-output -n build
+      /opt/conda/bin/conda run --no-capture-output -n build \
         conda mambabuild --numpy ${numpy_version} \
         -c conda-forge -c bioconda -c iossifovlab \
         /wd/conda-recipes/gpf_dae'
@@ -247,43 +249,43 @@ function main() {
 
     # Build each package in its own context in parallel
     build_run_container ctx:ctx_spliceai_annotator bash -c '\
-      /opt/conda/bin/conda run --no-capture-output -n build
+      /opt/conda/bin/conda run --no-capture-output -n build \
       conda mambabuild \
       -c conda-forge -c bioconda -c file:///wd/builds \
       /wd/conda-recipes/gpf_spliceai_annotator'
 
     build_run_container ctx:ctx_rest_client bash -c '\
-      /opt/conda/bin/conda run --no-capture-output -n build
+      /opt/conda/bin/conda run --no-capture-output -n build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       /wd/conda-recipes/gpf_rest_client'
 
     build_run_container ctx:ctx_impala_storage bash -c '\
-      /opt/conda/bin/conda run --no-capture-output -n build
+      /opt/conda/bin/conda run --no-capture-output -n build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       /wd/conda-recipes/gpf_impala_storage'
 
     build_run_container ctx:ctx_impala2_storage bash -c '\
-      /opt/conda/bin/conda run --no-capture-output -n build
+      /opt/conda/bin/conda run --no-capture-output -n build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       /wd/conda-recipes/gpf_impala2_storage'
 
     build_run_container ctx:ctx_vep_annotator bash -c '\
-      /opt/conda/bin/conda run --no-capture-output -n build
+      /opt/conda/bin/conda run --no-capture-output -n build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       /wd/conda-recipes/gpf_vep_annotator'
 
     build_run_container ctx:ctx_gpfjs bash -c '\
-      /opt/conda/bin/conda run --no-capture-output -n build
+      /opt/conda/bin/conda run --no-capture-output -n build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c iossifovlab \
       /wd/conda-recipes/gpf_gpfjs'
 
     build_run_container ctx:ctx_wdae bash -c '\
-      /opt/conda/bin/conda run --no-capture-output -n build
+      /opt/conda/bin/conda run --no-capture-output -n build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
       /wd/conda-recipes/gpf_wdae'
