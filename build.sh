@@ -328,10 +328,11 @@ function main() {
 
   build_stage "Build gpf_federation package"
   {
-    build_run_container ctx:ctx_build \
+    build_run_container ctx:ctx_build bash -c '\
+      /opt/conda/bin/conda run --no-capture-output -n build \
       conda mambabuild --numpy ${numpy_version} \
       -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-      conda-recipes/gpf_federation
+      /wd/conda-recipes/gpf_federation'
 
     build_run_container ctx:ctx_build \
       cp /opt/conda/envs/build/conda-bld/noarch/gpf_federation-${gpf_version}-py_${build_no}.tar.bz2 \
