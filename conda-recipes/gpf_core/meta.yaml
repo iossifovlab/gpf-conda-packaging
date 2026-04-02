@@ -1,0 +1,46 @@
+{% set build_number = environ.get('build_no',0) %}
+{% set gpf_version = environ.get('gpf_version','2015.0.0') %}
+{% set python_version = environ.get('python_version','3.10') %}
+
+{% set run_environment = load_file_data('environment.yml') %}
+
+package:
+  name: gpf_core
+  version: {{ gpf_version }}
+
+source:
+  path: /wd/sources/gpf/gpf_core
+
+build:
+  number: {{ build_number }}
+  noarch: python
+  script: (python setup.py install --single-version-externally-managed --record=record.txt)
+
+requirements:
+  host:
+    - python={{ python_version }}
+    - setuptools=70.3
+    - pip=24.1
+
+  run:
+    {% for dep in run_environment.dependencies %}
+    - {{ dep }}
+    {% endfor %}
+    - gain_core={{ gpf_version }}
+
+test:
+  imports:
+    - gpf
+
+about:
+  home: https://github.com/iossifovlab/gpf
+  license: MIT License
+  license_family: MIT
+  license_file: ''
+  summary: GPF - Genotypes and Phenotypes in Familes
+  description: ''
+  doc_url: ''
+  dev_url: ''
+
+extra:
+  recipe-maintainers: ''

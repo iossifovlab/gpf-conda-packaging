@@ -1,15 +1,15 @@
-{% set build_number = environ.get("build_no",0) %}
+{% set build_number = environ.get('build_no',0) %}
 {% set gpf_version = environ.get('gpf_version','2015.0.0') %}
 {% set python_version = environ.get('python_version','3.10') %}
 
-{% set run_environment = load_file_data("environment.yml") %}
+{% set run_environment = load_file_data('environment.yml') %}
 
 package:
-  name: gpf_wdae
+  name: gain_core
   version: {{ gpf_version }}
 
 source:
-  path: /wd/sources/gpf/wdae
+  path: /wd/sources/gpf/gain_core
 
 build:
   number: {{ build_number }}
@@ -23,13 +23,13 @@ requirements:
     - pip=24.1
 
   run:
-    - python={{ python_version }}
-    - gpf_dae={{ gpf_version }}
+    {% for dep in run_environment.dependencies %}
+    - {{ dep }}
+    {% endfor %}
 
 test:
   imports:
-    - wdae
-    - users_api
+    - gain
 
 about:
   home: https://github.com/iossifovlab/gpf
