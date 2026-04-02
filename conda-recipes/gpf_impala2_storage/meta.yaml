@@ -24,7 +24,7 @@ requirements:
 
   run:
     - python={{ python_version }}
-    - gpf_dae={{ gpf_version }}
+    - gpf_core={{ gpf_version }}
     {% for dep in run_environment.dependencies %}
     - {{ dep }}
     {% endfor %}

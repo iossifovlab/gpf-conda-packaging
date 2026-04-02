@@ -22,7 +22,7 @@ requirements:
 
   run:
     - python={{ python_version }}
-    - gpf_dae={{ gpf_version }}
+    - gain_core={{ gpf_version }}
 
 test:
   imports:
