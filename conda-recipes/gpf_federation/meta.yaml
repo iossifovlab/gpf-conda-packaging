@@ -24,7 +24,7 @@ requirements:
 
   run:
     - python={{ python_version }}
-    - gpf_wdae={{ gpf_version }}
+    - gpf_web={{ gpf_version }}
     - gpf_rest_client={{ gpf_version }}
     {% for dep in run_environment.dependencies %}
     - {{ dep }}

@@ -28,7 +28,7 @@ requirements:
 
 test:
   imports:
-    - wdae
+    - gpf_web
     - users_api
 
 about:
