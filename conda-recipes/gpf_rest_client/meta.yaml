@@ -24,6 +24,7 @@ requirements:
 
   run:
     - python={{ python_version }}
+    - gpf_core={{ gpf_version }}
     - requests
     {% for dep in run_environment.dependencies %}
     - {{ dep }}

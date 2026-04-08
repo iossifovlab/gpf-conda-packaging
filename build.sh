@@ -85,8 +85,9 @@ function main() {
     build_run_local mkdir -p ./sources/gpf
     build_docker_image_cp_from "$gpf_package_image" ./sources/ /gpf
     
-    build_run cp sources/gpf/environment.yml sources/gpf/dae
-    build_run cp sources/gpf/environment.yml sources/gpf/wdae
+    build_run cp sources/gpf/environment.yml sources/gpf/gain_core
+    build_run cp sources/gpf/environment.yml sources/gpf/gpf_core
+    build_run cp sources/gpf/environment.yml sources/gpf/gpf_web
 
   }
 
@@ -96,7 +97,7 @@ function main() {
     # copy gpf package
     build_run_local mkdir -p ./sources/gpfjs
     build_docker_image_cp_from "$gpfjs_package_image" ./sources/ /gpfjs
-    build_docker_image_cp_from "$gpfjs_package_image" ./sources/gpf/wdae/wdae/gpfjs/static/gpfjs/ /gpfjs
+    build_docker_image_cp_from "$gpfjs_package_image" ./sources/gpf/gpf_web/gpf_web/gpfjs/static/gpfjs/ /gpfjs
   }
 
   build_stage "Get GPF version"
@@ -143,7 +144,7 @@ function main() {
     build_deps_graph_write_image 'build-env/dependency-graph.svg'
   }
 
-  build_stage "Build gpf_dae package"
+  build_stage "Build gain_core and gpf_core package"
   {
     build_run_local echo "gpf_version=${gpf_version}"
     build_run_local echo "build_no=${build_no}"
@@ -167,11 +168,22 @@ function main() {
       /opt/conda/bin/conda run --no-capture-output -n build \
         conda mambabuild --numpy ${numpy_version} \
         -c conda-forge -c bioconda -c iossifovlab \
-        /wd/conda-recipes/gpf_dae'
+        /wd/conda-recipes/gain_core'
 
     build_run_container ctx:ctx_build \
-      cp /opt/conda/envs/build/conda-bld/noarch/gpf_dae-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gain_core-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
+
+    build_run_container ctx:ctx_build bash -c '\
+      /opt/conda/bin/conda run --no-capture-output -n build \
+        conda mambabuild --numpy ${numpy_version} \
+        -c conda-forge -c bioconda -c iossifovlab \
+        /wd/conda-recipes/gpf_core'
+
+    build_run_container ctx:ctx_build \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_core-${gpf_version}-py_${build_no}.tar.bz2 \
+      /wd/builds/noarch
+
 
     build_run_container ctx:ctx_build \
       conda index /wd/builds/
@@ -286,7 +298,7 @@ function main() {
       /opt/conda/bin/conda run --no-capture-output -n build \
         conda mambabuild --numpy ${numpy_version} \
         -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-        /wd/conda-recipes/gpf_wdae'
+        /wd/conda-recipes/gpf_web'
 
     # Copy conda packages to the builds directory
     build_run_container ctx:ctx_spliceai_annotator \
@@ -314,7 +326,7 @@ function main() {
       /wd/builds/noarch
 
     build_run_container ctx:ctx_wdae \
-      cp /opt/conda/envs/build/conda-bld/noarch/gpf_wdae-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gpf_web-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     # Index the conda channel
