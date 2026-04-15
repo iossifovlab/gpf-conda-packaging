@@ -9,7 +9,7 @@ package:
   version: {{ gpf_version }}
 
 source:
-  path: /wd/sources/gpf/federation
+  path: /wd/sources/gpf/gpf_federation
 
 build:
   number: {{ build_number }}

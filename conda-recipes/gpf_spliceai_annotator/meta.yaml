@@ -7,7 +7,7 @@ package:
   version: {{ gpf_version }}
 
 source:
-  path: /wd/sources/gpf/spliceai_annotator
+  path: /wd/sources/gpf/gain_spliceai_annotator
 
 build:
   number: {{ build_number }}

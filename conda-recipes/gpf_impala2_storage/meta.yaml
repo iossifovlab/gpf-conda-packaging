@@ -9,7 +9,7 @@ package:
   version: {{ gpf_version }}
 
 source:
-  path: /wd/sources/gpf/impala2_storage
+  path: /wd/sources/gpf/gpf_impala2_storage
 
 build:
   number: {{ build_number }}

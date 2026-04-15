@@ -7,7 +7,7 @@ package:
   version: {{ gpf_version }}
 
 source:
-  path: /wd/sources/gpf/external_vep_annotator
+  path: /wd/sources/gpf/gain_vep_annotator
 
 build:
   number: {{ build_number }}
