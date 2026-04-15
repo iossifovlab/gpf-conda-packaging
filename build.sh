@@ -286,7 +286,7 @@ function main() {
       /opt/conda/bin/conda run --no-capture-output -n build \
         conda mambabuild --numpy ${numpy_version} \
         -c conda-forge -c bioconda -c file:///wd/builds -c iossifovlab \
-        /wd/conda-recipes/gpf_vep_annotator'
+        /wd/conda-recipes/gain_vep_annotator'
 
     build_run_container ctx:ctx_gpfjs bash -c '\
       /opt/conda/bin/conda run --no-capture-output -n build \
