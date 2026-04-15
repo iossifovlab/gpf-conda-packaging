@@ -3,16 +3,21 @@
 {% set python_version = environ.get('python_version','3.10') %}
 
 package:
-  name: gpf_vep_annotator
+  name: gain_spliceai_annotator
   version: {{ gpf_version }}
 
 source:
-  path: /wd/sources/gpf/gain_vep_annotator
+  path: /wd/sources/gpf/gain_spliceai_annotator
 
 build:
   number: {{ build_number }}
   noarch: python
-  script: (python setup.py install --single-version-externally-managed --record=record.txt)
+  script: 
+  - (python setup.py install --single-version-externally-managed --record=record.txt)
+  - mkdir -p "${PREFIX}/etc/conda/activate.d"
+  - cp "${RECIPE_DIR}/scripts/activate.sh" "${PREFIX}/etc/conda/activate.d/${PKG_NAME}_activate.sh"
+  - mkdir -p "${PREFIX}/etc/conda/deactivate.d"
+  - cp "${RECIPE_DIR}/scripts/deactivate.sh" "${PREFIX}/etc/conda/deactivate.d/${PKG_NAME}_deactivate.sh"
 
 requirements:
   host:
@@ -23,10 +28,11 @@ requirements:
   run:
     - python={{ python_version }}
     - gain_core={{ gpf_version }}
+    - tensorflow>=2.4.1
 
 test:
   imports:
-    - vep_annotator
+    - spliceai_annotator
 
 about:
   home: https://github.com/iossifovlab/gpf

@@ -262,7 +262,7 @@ function main() {
       /opt/conda/bin/conda run --no-capture-output -n build \
         conda mambabuild \
         -c conda-forge -c bioconda -c file:///wd/builds \
-        /wd/conda-recipes/gpf_spliceai_annotator'
+        /wd/conda-recipes/gain_spliceai_annotator'
 
     build_run_container ctx:ctx_rest_client bash -c '\
       /opt/conda/bin/conda run --no-capture-output -n build \
@@ -302,7 +302,7 @@ function main() {
 
     # Copy conda packages to the builds directory
     build_run_container ctx:ctx_spliceai_annotator \
-      cp /opt/conda/envs/build/conda-bld/noarch/gpf_spliceai_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gain_spliceai_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_rest_client \
@@ -318,7 +318,7 @@ function main() {
       /wd/builds/noarch
 
     build_run_container ctx:ctx_vep_annotator \
-      cp /opt/conda/envs/build/conda-bld/noarch/gpf_vep_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
+      cp /opt/conda/envs/build/conda-bld/noarch/gain_vep_annotator-${gpf_version}-py_${build_no}.tar.bz2 \
       /wd/builds/noarch
 
     build_run_container ctx:ctx_gpfjs \
